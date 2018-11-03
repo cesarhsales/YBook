@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">YBook</string>
+    <string name="send_email_link">Please tell us your email, so we can send you a
+    "create a new password link...</string>
 </resources>
