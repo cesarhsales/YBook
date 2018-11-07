@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "691657610990",
+    "firebase_url": "https://ybook-66be0.firebaseio.com",
+    "project_id": "ybook-66be0",
+    "storage_bucket": "ybook-66be0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691657610990:android:c0e74f13a077c3b0",
+        "android_client_info": {
+          "package_name": "com.example.ybook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691657610990-ardofst2v3ssm7outp7pdj4eb64iolis.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ybook",
+            "certificate_hash": "d7a8417ec8e998054fd594e9c960ed6b55f0991a"
+          }
+        },
+        {
+          "client_id": "691657610990-b37puevagq2dvi0n7e50ddag2v9f26he.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWwlUaF5VmX3Wgg6BIcB6zOn2vGvsvpXs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691657610990-b37puevagq2dvi0n7e50ddag2v9f26he.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
