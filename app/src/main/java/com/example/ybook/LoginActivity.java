@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        /* Create a link to call SendNewPasswordLinkActivity.  */
+        /* Call SendNewPasswordLinkActivity.  */
         ForgotPassword.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(LoginActivity.this, SendNewPasswordLinkActivity.class );
@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
     }
-
 
     public void startSignIn() {
         String email = Email.getText().toString();

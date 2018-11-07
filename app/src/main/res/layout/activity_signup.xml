@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <EditText
-        android:id="@+id/etSenha"
+        android:id="@+id/etPassword"
         android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -83,7 +83,7 @@
         app:layout_constraintVertical_bias="0.018" />
 
     <EditText
-        android:id="@+id/etConfirmeSenha"
+        android:id="@+id/etConfirmPassword"
         android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -99,7 +99,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSenha"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword"
         app:layout_constraintVertical_bias="0.081" />
 
     <Button
@@ -117,7 +117,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etConfirmeSenha"
+        app:layout_constraintTop_toBottomOf="@+id/etConfirmPassword"
         app:layout_constraintVertical_bias="0.142" />
 
 </android.support.constraint.ConstraintLayout>
