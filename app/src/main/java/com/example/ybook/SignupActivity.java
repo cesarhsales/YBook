@@ -33,7 +33,7 @@ public class SignupActivity extends AppCompatActivity {
         confirmPasswprd = (EditText) findViewById(R.id.etConfirmPassword);
         signup = (Button) findViewById(R.id.btnSignup);
 
-        String _email = email.getText().toString().trim();
+        /*String _email = email.getText().toString().trim();
         String _password = password.getText().toString().trim();
         String cPassword = confirmPasswprd.getText().toString().trim();
         if (!_password.equals(cPassword)) {
@@ -64,7 +64,7 @@ public class SignupActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                            });
+                            });*/
         }
     }
-}
+

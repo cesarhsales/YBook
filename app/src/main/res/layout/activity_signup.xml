@@ -6,22 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="166dp"
-        android:layout_height="94dp"
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="YBook"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="50dp"
+        android:textStyle="bold|italic"
+        app:fontFamily="cursive"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.09"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintVertical_bias="0.172"
+        tools:text="YBook" />
 
     <EditText
         android:id="@+id/etUsername"
@@ -32,16 +34,17 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
         android:textAppearance="@android:style/TextAppearance.Material"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.113" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.028" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -107,6 +110,7 @@
         app:layout_constraintVertical_bias="0.081" />
 
     <Button
+        android:background="@color/yellow"
         android:id="@+id/btnCad"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
