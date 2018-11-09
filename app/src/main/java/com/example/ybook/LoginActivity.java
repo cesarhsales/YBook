@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView ForgotPassword;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,5 +101,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Authenticate the user w/ email and password
+     * @param user
+     */
+    public void authenticateUser (User user) {
+
+    }
     }
 
