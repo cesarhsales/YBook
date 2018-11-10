@@ -10,7 +10,7 @@ import org.junit.Test;
 public class UserAuthenticationTest {
     @Test
     public void emailFormatShouldMatch() throws StringFormatException {
-        String email = "david@david.com";
+        String email = "test@tes.com";
         StringValidation.isValidEmail(email);
     }
 

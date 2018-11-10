@@ -1,19 +1,11 @@
 package com.example.ybook;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class SignupActivity extends AppCompatActivity {
     private EditText username, email, password, confirmPasswprd;
@@ -28,7 +20,7 @@ public class SignupActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         username = (EditText) findViewById(R.id.etUsername);
-        email = (EditText) findViewById(R.id.etEmail);
+        email = (EditText) findViewById(R.id.sendLinkEmail);
         password = (EditText) findViewById(R.id.etPassword);
         confirmPasswprd = (EditText) findViewById(R.id.etConfirmPassword);
         signup = (Button) findViewById(R.id.btnSignup);
