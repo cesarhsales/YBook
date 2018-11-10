@@ -1,13 +1,17 @@
 package com.example.ybook;
 
-import org.junit.Assert;
+import com.example.ybook.customexceptions.StringFormatException;
+import com.example.ybook.customexceptions.StringInvalidCharactersException;
+import com.example.ybook.customexceptions.StringLengthException;
+import com.example.ybook.util.StringValidation;
+
 import org.junit.Test;
 
-public class LoginActivityTest {
+public class UserAuthenticationTest {
     @Test
     public void emailFormatShouldMatch() throws StringFormatException {
         String email = "david@david.com";
-        Assert.assertTrue(StringValidation.isValidEmail(email));
+        StringValidation.isValidEmail(email);
     }
 
    @Test(expected = StringFormatException.class)
@@ -28,5 +32,15 @@ public class LoginActivityTest {
         StringValidation.isValidPasswordLength(password);
     }
 
+    @Test
+    public void usernameCharactersAreValid() throws StringInvalidCharactersException {
+        String username = "cesarsales";
+        StringValidation.isValidUsername(username);
+    }
 
+    @Test(expected = StringInvalidCharactersException.class)
+    public void usernameCharactersAreInvalid() throws StringInvalidCharactersException {
+        String username = "select * from Users;";
+        StringValidation.isValidUsername(username);
+    }
 }
