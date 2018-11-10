@@ -8,10 +8,10 @@
 
     <TextView
         android:id="@+id/etLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="142dp"
+        android:layout_height="71dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="YBook"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="50dp"

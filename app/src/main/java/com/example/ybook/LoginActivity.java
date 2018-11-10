@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,15 +86,20 @@ public class LoginActivity extends AppCompatActivity {
         String email = Email.getText().toString();
         String password = Password.getText().toString();
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginActivity.this, "Email or password is empty",
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(LoginActivity.this, "Please enter your email address.",
                     Toast.LENGTH_LONG).show();
-        } else {
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(LoginActivity.this, "Please enter your password.",
+                    Toast.LENGTH_LONG).show();
+        }
+        else {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Please enter a valid email and password",
+                       // Log.w("HOWDY", "signInWithEmail:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
