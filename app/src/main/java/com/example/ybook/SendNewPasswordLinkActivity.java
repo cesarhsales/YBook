@@ -33,7 +33,7 @@ public class SendNewPasswordLinkActivity extends AppCompatActivity {
             StringValidation.isValidEmail(email.getText().toString());
             Toast.makeText(this, "Email sent", Toast.LENGTH_LONG).show();
         } catch (StringFormatException e) {
-            Toast.makeText(this, "Incorrect email format", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

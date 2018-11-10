@@ -3,5 +3,11 @@
     <string name="send_email_link">Please tell us your email, so we can help you create a new
     password!</string>
     <string name="send_email_link_button">SEND</string>
-    <string name="email">email</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="loginButton">Log In</string>
+    <string name="signUpButton">Sign Up</string>
+    <string name="forgotPasswordLink">I forgot my password</string>
 </resources>

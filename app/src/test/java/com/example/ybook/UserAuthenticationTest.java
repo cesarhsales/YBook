@@ -5,42 +5,59 @@ import com.example.ybook.customexceptions.StringInvalidCharactersException;
 import com.example.ybook.customexceptions.StringLengthException;
 import com.example.ybook.util.StringValidation;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class UserAuthenticationTest {
     @Test
-    public void emailFormatShouldMatch() throws StringFormatException {
-        String email = "test@tes.com";
+    public void emailFormatIsValid() throws StringFormatException {
+        String email = "test@test.com";
         StringValidation.isValidEmail(email);
     }
 
    @Test(expected = StringFormatException.class)
-    public void emailFormatShouldNotMatch() throws StringFormatException {
-        String email = "daviddavid.com";
+    public void emailFormatIsInvalid() throws StringFormatException {
+        String email = "test.com";
         StringValidation.isValidEmail(email);
    }
 
    @Test
-    public void passwordLengthShouldBe() throws StringLengthException {
+    public void passwordLengthIsValid() throws StringLengthException {
         String password = "12345678";
         StringValidation.isValidPasswordLength(password);
    }
 
     @Test(expected = StringLengthException.class)
-    public void passwordLengthShouldNotBe() throws StringLengthException {
+    public void passwordLengthIsInvalid() throws StringLengthException {
         String password = "12348";
         StringValidation.isValidPasswordLength(password);
     }
 
     @Test
-    public void usernameCharactersAreValid() throws StringInvalidCharactersException {
-        String username = "cesarsales";
+    public void usernameIsValid() throws StringInvalidCharactersException {
+        String username = "crazytaxi";
         StringValidation.isValidUsername(username);
     }
 
     @Test(expected = StringInvalidCharactersException.class)
-    public void usernameCharactersAreInvalid() throws StringInvalidCharactersException {
-        String username = "select * from Users;";
+    public void usernameIsInvalid() throws StringInvalidCharactersException {
+        String username = "test!";
         StringValidation.isValidUsername(username);
+    }
+
+    @Test
+    public void passwordsMatch() {
+        String password = "aTestPassword";
+        String confirmPassword = "aTestPassword";
+
+        Assert.assertTrue(password.equals(confirmPassword));
+    }
+
+    @Test
+    public void passwordsDontMatch() {
+        String password = "aTestPassword";
+        String confirmPassword = "testPassword";
+
+        Assert.assertFalse(password.equals(confirmPassword));
     }
 }

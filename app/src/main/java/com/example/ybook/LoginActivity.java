@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ybook.customexceptions.StringFormatException;
+import com.example.ybook.util.StringValidation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,11 +35,11 @@ public class LoginActivity extends AppCompatActivity {
         //Get a instance of firebase library
         mAuth = FirebaseAuth.getInstance();
 
-        Email = (EditText) findViewById(R.id.sendLinkEmail);
-        Password = (EditText) findViewById(R.id.etPassword);
-        Login = (Button) findViewById(R.id.btnLogin);
-        SignUp = (Button) findViewById(R.id.btnSignup);
-        ForgotPassword = (TextView) findViewById(R.id.tvForgotPassword);
+        Email = findViewById(R.id.loginEmail);
+        Password = findViewById(R.id.loginPassword);
+        Login = findViewById(R.id.loginButton);
+        SignUp = findViewById(R.id.loginSignUpButton);
+        ForgotPassword = findViewById(R.id.loginForgotPassword);
 
         SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,14 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = Email.getText().toString();
         String password = Password.getText().toString();
 
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(LoginActivity.this, "Please enter your email address.",
-                    Toast.LENGTH_LONG).show();
-        } else if (TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginActivity.this, "Please enter your password.",
-                    Toast.LENGTH_LONG).show();
-        }
-        else {
+        if(isValidUserInput(email, password)) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -106,6 +101,30 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isValidUserInput(String email, String password) {
+        try {
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(this, "Please enter your email address",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            StringValidation.isValidEmail(email);
+
+            if (TextUtils.isEmpty(password)) {
+                Toast.makeText(this, "Please enter your password",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+        } catch (StringFormatException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Authenticate the user w/ email and password
      * @param user
@@ -113,5 +132,5 @@ public class LoginActivity extends AppCompatActivity {
     public void authenticateUser (User user) {
 
     }
-    }
+}
 

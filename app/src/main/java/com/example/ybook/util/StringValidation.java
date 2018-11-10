@@ -14,7 +14,8 @@ public  class StringValidation {
 
         //if there are invalid characters in the string we want to throw exception
         if (testStringPatternMatch(usernameInvalidCharacters, username))
-            throw new StringInvalidCharactersException("Invalid characters in username");
+            throw new StringInvalidCharactersException(
+                    "Username allowed characters: 0-9, a-zA-Z and \".\"");
     }
 
     public static void isValidEmail(String email) throws StringFormatException {
@@ -22,7 +23,7 @@ public  class StringValidation {
 
         //if the format matches we don't want to throw exception, that's why we deny "!"
         if (!testStringPatternMatch(emailFormat, email))
-            throw new StringFormatException("Incorrect email format");
+            throw new StringFormatException("Invalid email format");
     }
 
     public static void isValidPasswordLength (String password) throws StringLengthException {
