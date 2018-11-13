@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,15 +18,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText Email, Password;
-    private Button Login, SignUp;
-    private TextView ForgotPassword;
+    private static final String TAG = "LoginActivity";
+
+    private EditText email, password;
+    private Button login, signUp;
+    private TextView forgotPassword;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         //Get a instance of firebase library
         mAuth = FirebaseAuth.getInstance();
 
-        Email = findViewById(R.id.loginEmail);
-        Password = findViewById(R.id.loginPassword);
-        Login = findViewById(R.id.loginButton);
-        SignUp = findViewById(R.id.loginSignUpButton);
-        ForgotPassword = findViewById(R.id.loginForgotPassword);
+        email = findViewById(R.id.loginEmail);
+        password = findViewById(R.id.loginPassword);
+        login = findViewById(R.id.loginButton);
+        signUp = findViewById(R.id.loginSignUpButton);
+        forgotPassword = findViewById(R.id.loginForgotPassword);
 
-        SignUp.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class );
@@ -51,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         /* Call SendNewPasswordLinkActivity.  */
-        ForgotPassword.setOnClickListener(new View.OnClickListener(){
+        forgotPassword.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(LoginActivity.this, SendNewPasswordLinkActivity.class );
                 startActivity(intent);
@@ -68,10 +71,10 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
-        Login.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSignIn();
+                signIn(email.getText().toString(), password.getText().toString());
             }
         });
     }
@@ -79,26 +82,57 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        // Check if user is signed in (non-null) and update UI accordingly.
+        Log.i(TAG, "Signing out");
+        signOut();
 
+        /* Commented for test purposes!!!
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+        */
     }
 
-    public void startSignIn() {
-        String email = Email.getText().toString();
-        String password = Password.getText().toString();
+    public void signIn(String email, String password) {
+        Log.i(TAG, "Validating input");
+        if(!isValidUserInput(email, password)) {
+            return;
+        }
 
-        if(isValidUserInput(email, password)) {
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        Log.i(TAG, "Signing in");
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (!task.isSuccessful()) {
-                       // Log.w("HOWDY", "signInWithEmail:failure", task.getException());
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
                     }
                 }
             });
+    }
+
+    private void signOut() {
+        mAuth.signOut();
+        updateUI(null);
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            Toast.makeText(LoginActivity.this, user.getEmail(),
+                    Toast.LENGTH_SHORT).show();
         }
+        /*
+        Intent intent = new Intent(SignupActivity.this, BookListActivity.class);
+        startActivity(intent);
+        */
     }
 
     private boolean isValidUserInput(String email, String password) {
