@@ -3,17 +3,16 @@ package com.example.ybook;
 import android.media.Image;
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseUser;
+
 public class User {
     private String username;
     private String email;
-    private String password;
     private Image profileImage;
 
-    public User(String username, String email, String password, Image profileImage) {
+    public User(String username, String email) {
         this.username = username;
         this.email = email;
-        this.password = password;
-        this.profileImage = profileImage;
     }
 
     public String getUsername() {
@@ -30,14 +29,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Image getProfileImage() {

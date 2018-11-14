@@ -1,6 +1,8 @@
 package com.example.ybook;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,12 +16,15 @@ import android.widget.Toast;
 import com.example.ybook.customexceptions.StringFormatException;
 import com.example.ybook.customexceptions.StringInvalidCharactersException;
 import com.example.ybook.customexceptions.StringLengthException;
+import com.example.ybook.util.SharedPreferencesCommon;
 import com.example.ybook.util.StringValidation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.gson.Gson;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
@@ -56,11 +61,14 @@ public class SignupActivity extends AppCompatActivity {
         super.onStart();
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail());
+            updateUI(user);
+        }
     }
 
-    public void createAccount(String username, String email, String password,
+    public void createAccount(final String username, final String email, String password,
                               String confirmPassword) {
         Log.i(TAG, "Validating input");
         if (!isValidUserInput(username, email, password, confirmPassword)) {
@@ -75,7 +83,20 @@ public class SignupActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest
+                                .Builder()
+                                .setDisplayName(username)
+                                .build();
+                        firebaseUser.updateEmail(email);
+                        firebaseUser.updateProfile(profileUpdates);
+
+                        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail());
+
+                        SharedPreferencesCommon.saveUserInSharedPreferences(user,
+                                SignupActivity.this);
+
                         updateUI(user);
                     } else {
                         // If sign in fails, display a message to the user.
@@ -93,9 +114,13 @@ public class SignupActivity extends AppCompatActivity {
         updateUI(null);
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(User user) {
         if (user != null) {
-            Toast.makeText(SignupActivity.this, user.getDisplayName(),
+            user = SharedPreferencesCommon.readUserInSharedPreferences(
+                    SignupActivity.this,
+                    "User");
+
+            Toast.makeText(SignupActivity.this, user.getEmail(),
                     Toast.LENGTH_SHORT).show();
         }
         /*
