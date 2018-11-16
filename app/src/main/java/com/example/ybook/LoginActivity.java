@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         /* Call SendNewPasswordLinkActivity.  */
         forgotPassword.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -70,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
-
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
