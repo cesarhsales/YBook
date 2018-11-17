@@ -48,6 +48,10 @@ public class SendNewPasswordLinkActivity extends AppCompatActivity {
                                         "Email sent.",
                                         Toast.LENGTH_SHORT).show();
                             }
+                            else {
+                                Toast.makeText(SendNewPasswordLinkActivity.this,
+                                        "Email send failure. Make sure email address is valid.",Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
 
