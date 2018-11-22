@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ybook.customexceptions.StringFormatException;
-import com.example.ybook.util.SharedPreferencesCommon;
 import com.example.ybook.util.StringValidation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button login, signUp;
     private TextView forgotPassword;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class );
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class );
                 startActivity(intent);
             }
         });
@@ -61,10 +59,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null) {
+                if (firebaseAuth.getCurrentUser() != null) {
                     startActivity(new Intent(LoginActivity.this, SendNewPasswordLinkActivity.class));
                 }
             }
@@ -83,12 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         Log.i(TAG, "Signing out");
+        //todo remove!
         signOut();
-
-        /* Commented for test purposes!!!
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-        */
     }
 
     public void signIn(String email, String password) {
@@ -106,13 +100,13 @@ public class LoginActivity extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
+                        startActivity(new Intent(LoginActivity.this,
+                                BookListActivity.class));
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(LoginActivity.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                     }
                 }
             });
@@ -120,18 +114,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signOut() {
         mAuth.signOut();
-        updateUI(null);
-    }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            Toast.makeText(LoginActivity.this, user.getEmail(),
-                    Toast.LENGTH_SHORT).show();
-        }
-        /*
-        Intent intent = new Intent(SignupActivity.this, BookListActivity.class);
-        startActivity(intent);
-        */
     }
 
     private boolean isValidUserInput(String email, String password) {
@@ -156,14 +138,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    /**
-     * Authenticate the user w/ email and password
-     * @param user
-     */
-    public void authenticateUser (User user) {
-
     }
 }
 

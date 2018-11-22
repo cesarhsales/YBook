@@ -1,8 +1,5 @@
 package com.example.ybook;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,9 +21,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.gson.Gson;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
     private EditText username, email, password, confirmPassword;
@@ -77,7 +73,7 @@ public class SignupActivity extends AppCompatActivity {
 
         Log.i(TAG, "Creating user with email and password");
         mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+            .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
@@ -95,13 +91,13 @@ public class SignupActivity extends AppCompatActivity {
                         User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail());
 
                         SharedPreferencesCommon.saveUserInSharedPreferences(user,
-                                SignupActivity.this);
+                                SignUpActivity.this);
 
                         updateUI(user);
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(SignupActivity.this, "Authentication failed.",
+                        Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
@@ -117,14 +113,14 @@ public class SignupActivity extends AppCompatActivity {
     private void updateUI(User user) {
         if (user != null) {
             user = SharedPreferencesCommon.readUserInSharedPreferences(
-                    SignupActivity.this,
+                    SignUpActivity.this,
                     "User");
 
-            Toast.makeText(SignupActivity.this, user.getEmail(),
+            Toast.makeText(SignUpActivity.this, user.getEmail(),
                     Toast.LENGTH_SHORT).show();
         }
         /*
-        Intent intent = new Intent(SignupActivity.this, BookListActivity.class);
+        Intent intent = new Intent(SignUpActivity.this, BookListActivity.class);
         startActivity(intent);
         */
     }
