@@ -11,4 +11,12 @@
     <string name="signUpButton">Sign Up</string>
     <string name="forgotPasswordLink">I forgot my password</string>
     <string name="bookListTitle">My Book List</string>
+    <string name="bookTitle">Title</string>
+    <string name="bookType">Type</string>
+    <string name="bookAuthor">Author</string>
+    <string name="bookYearPublished">Year Published</string>
+    <string name="bookNumPages">Number of Pages</string>
+    <string name="bookComments">Comments:</string>
+    <string name="bookSave">Save</string>
+    <string name="addEditBook">Add/Edit book</string>
 </resources>

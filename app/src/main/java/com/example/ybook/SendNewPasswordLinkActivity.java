@@ -51,6 +51,7 @@ public class SendNewPasswordLinkActivity extends AppCompatActivity {
                             else {
                                 Toast.makeText(SendNewPasswordLinkActivity.this,
                                         "Email send failure. Make sure email address is valid.",Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "Failure to send email.");
                             }
                         }
                     });

@@ -5,5 +5,6 @@ public class Authentication {
 
     public void authenticate(User user) {
 
+
     }
 }
