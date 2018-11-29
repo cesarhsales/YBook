@@ -12,7 +12,7 @@ public class Book {
 
     // Constructor
     public Book(String comments, String title, String type, String author,
-                int year, int pages, boolean isRead, int position) {
+                int year, int pages, boolean isRead) {
         this.comments = comments;
         this.title = title;
         this.type = type;
@@ -20,7 +20,7 @@ public class Book {
         this.year = year;
         this.pages = pages;
         this.isRead = isRead;
-        this.position = position;
+        //this.position = position;
     }
 
 

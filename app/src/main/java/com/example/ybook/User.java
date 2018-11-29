@@ -5,10 +5,14 @@ import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+
 public class User {
     private String username;
     private String email;
     private Image profileImage;
+    private String UID;
+    private List <Book> books;
 
     public User(String username, String email) {
         this.username = username;
@@ -38,4 +42,20 @@ public class User {
     public void setProfileImage(Image profileImage) {
         this.profileImage = profileImage;
     }
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
 }
