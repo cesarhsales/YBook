@@ -18,7 +18,7 @@
     <string name="bookNumPages">Number of Pages</string>
     <string name="bookComments">Comments:</string>
     <string name="bookSave">Save</string>
-    <string name="addEditBook">Add/Edit book</string>
+    <string name="addEditBook">Already read</string>
     <string name="itemTitle">Item</string>
     <string name="favIconBorder">favIcon</string>
     <string name="addIconText">addIcon</string>

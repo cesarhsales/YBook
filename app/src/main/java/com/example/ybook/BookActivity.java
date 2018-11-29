@@ -21,8 +21,12 @@ public class BookActivity extends AppCompatActivity {
     private Button SaveBook;
     private Book book;
     private CheckBox read;
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    // [START declare_database_ref]
+
+    FirebaseDatabase mDatabase;
+    DatabaseReference user;
+    // [END declare_database_ref]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,25 +41,30 @@ public class BookActivity extends AppCompatActivity {
         comments = (EditText) findViewById(R.id.bookComments);
         SaveBook = (Button) findViewById(R.id.bookSave);
         read = findViewById(R.id.checkRead);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        user = mDatabase.getReference("User");
 
 
         //Close activity if user not logged in
-        if(firebaseAuth.getCurrentUser() == null){
+        if(mAuth.getCurrentUser() == null){
             finish();
         }
+
 
         SaveBook.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  addBook(title.getText().toString(), type.getText().toString(), author.getText().toString(),
                          year.getText().toString(), numPages.getText().toString(), comments.getText().toString());
+                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                 user.child(firebaseUser.getUid()).setValue(books);
              }
          });
     }
 
+
+    List<Book> books = new ArrayList<Book>();
     /**
      * Create a new book to be added to book list.
      * @param title
@@ -68,7 +77,8 @@ public class BookActivity extends AppCompatActivity {
      */
     public void addBook(String title, String type, String author,
                         String year, String pages, String comments) {
-       // List<Book> books = new ArrayList<Book>();
+
+
 
         if (title.isEmpty()) {
             Toast.makeText(BookActivity.this, "Please enter the title of the book.",
@@ -85,10 +95,16 @@ public class BookActivity extends AppCompatActivity {
         } else {
             book.setRead(false);
         }
-        //books.add(book);
+
 
         //Begin work with firebase
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        books.add(book);
+
+
+
+
+
 
 
         //set values to the user class
@@ -98,7 +114,7 @@ public class BookActivity extends AppCompatActivity {
 
         // This will need to be changed, was just using it to see if I could get
         // the database to store data... didn't quite get far enough to finish yet.
-        databaseReference.child("user").child(firebaseUser.getUid()).setValue(book);
+        //databaseReference.child("user").child(firebaseUser.getUid()).setValue(book);
         // Just to make sure correct UID is accessed.
         // Toast.makeText(BookActivity.this, user.getUid(), Toast.LENGTH_LONG).show();
         Toast.makeText(BookActivity.this, "Book saved.", Toast.LENGTH_LONG).show();
