@@ -5,23 +5,25 @@ public class Book {
     private String title;
     private String type;
     private String author;
-    private int year;
-    private int pages;
+    private String year;
+    private String pages;
     private boolean isRead;
-    private int position;
+    // private int position;
 
     // Constructor
-    public Book(String comments, String title, String type, String author,
-                int year, int pages, boolean isRead) {
-        this.comments = comments;
+
+    public Book(String title, String type, String author,
+                String year, String pages, String comments){//boolean isRead, int position) {
         this.title = title;
         this.type = type;
         this.author = author;
         this.year = year;
         this.pages = pages;
-        this.isRead = isRead;
+        this.comments = comments;
+        //this.isRead = isRead;
         //this.position = position;
     }
+
 
 
     // Getters and setters
@@ -43,16 +45,16 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-    public int getYear() {
+    public String getYear() {
         return year;
     }
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
-    public int getPages() {
+    public String getPages() {
         return pages;
     }
-    public void setPages(int pages) {
+    public void setPages(String pages) {
         this.pages = pages;
     }
     public boolean isRead() {
@@ -61,16 +63,13 @@ public class Book {
     public void setRead(boolean read) {
         isRead = read;
     }
-    public int getPosition() {
-        return position;
-    }
-    public void setPosition(int position) {
-        this.position = position;
-    }
+    //public int getPosition() { return position; }
+    //public void setPosition(int position) { this.position = position; }
     public String getComments() {
         return comments;
     }
     public void setComments(String comments) {
         this.comments = comments;
     }
+
 }
