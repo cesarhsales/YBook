@@ -18,8 +18,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:layout_width="370dp"
-        android:layout_height="374dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
@@ -67,11 +67,11 @@
 
             <EditText
                 android:id="@+id/bookTitle"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
@@ -85,9 +85,13 @@
 
             <EditText
                 android:id="@+id/bookType"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="text"
@@ -100,9 +104,13 @@
 
             <EditText
                 android:id="@+id/bookAuthor"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -115,9 +123,13 @@
 
             <EditText
                 android:id="@+id/bookYearPublished"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="number"
@@ -130,9 +142,13 @@
 
             <EditText
                 android:id="@+id/bookNumPages"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="number"
@@ -145,10 +161,14 @@
 
             <EditText
                 android:id="@+id/bookComments"
-                android:layout_width="360dp"
+                android:layout_width="0dp"
                 android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="@string/bookComments"

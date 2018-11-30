@@ -9,13 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookListAdapter extends ArrayAdapter<BookListModel> {
 
     private final Context context;
-    private final ArrayList<BookListModel> modelsArrayList;
+    private final List<BookListModel> modelsArrayList;
 
-    public BookListAdapter(Context context, ArrayList<BookListModel> modelsArrayList) {
+    public BookListAdapter(Context context, List<BookListModel> modelsArrayList) {
         super(context, R.layout.list_item, modelsArrayList);
 
         this.context = context;

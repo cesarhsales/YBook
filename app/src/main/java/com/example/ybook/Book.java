@@ -1,24 +1,28 @@
 package com.example.ybook;
 
 public class Book {
-    private String comments;
     private String title;
     private String type;
     private String author;
     private int year;
     private int pages;
+    private String comments;
     private boolean isRead;
     private int position;
 
+    public Book() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
     // Constructor
-    public Book(String comments, String title, String type, String author,
-                int year, int pages, boolean isRead, int position) {
-        this.comments = comments;
+    public Book(String title, String type, String author,
+                int year, int pages, String comments, boolean isRead, int position) {
         this.title = title;
         this.type = type;
         this.author = author;
         this.year = year;
         this.pages = pages;
+        this.comments = comments;
         this.isRead = isRead;
         this.position = position;
     }

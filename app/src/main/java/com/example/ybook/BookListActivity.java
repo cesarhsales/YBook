@@ -3,13 +3,26 @@ package com.example.ybook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookListActivity extends AppCompatActivity {
+    private DatabaseReference databaseReference;
+    private FirebaseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,18 +38,49 @@ public class BookListActivity extends AppCompatActivity {
             }
         });
 
-        BookListAdapter adapter = new BookListAdapter(BookListActivity.this,
-                generateData());
+        //GET CURRENT USER AND FIREBASE REFERENCES
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        ListView list = findViewById(R.id.booksListView);
-        list.setAdapter(adapter);
+        //THIS EVENTLISTENER IS REPONSIBLE FOR CHECKING FOR CHANGES
+        //SO IT UPDATES AS NEEDED
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                User user = dataSnapshot.child("users").child(currentUser.getUid())
+                        .getValue(User.class);
+
+                Log.i("BookListActivity", "User:"+user.getEmail());
+
+                //Create the list adapter
+                BookListAdapter adapter = new BookListAdapter(BookListActivity.this,
+                        generateData(user.getBooks()));
+
+                //Set the adapter updating the UI
+                ListView list = findViewById(R.id.booksListView);
+                list.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("BookListActivity", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        //Adding the listener to firebase reference
+        databaseReference.addValueEventListener(postListener);
     }
 
-    private ArrayList<BookListModel> generateData(){
-        ArrayList<BookListModel> models = new ArrayList<BookListModel>();
-        models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px,"First Book"));
-        models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px,"Second Book"));
-        models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px,"Third Book"));
+    private List<BookListModel> generateData(List<Book> books){
+        List<BookListModel> models = new ArrayList<>();
+
+        if (books != null) {
+            for (Book b : books) {
+                models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px, b.getTitle()));
+            }
+        }
 
         return models;
     }
