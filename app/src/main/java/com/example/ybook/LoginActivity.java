@@ -20,6 +20,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Class responsible for logging the user to the application.
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since November, 12, 2018
+ */
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -85,6 +91,11 @@ public class LoginActivity extends AppCompatActivity {
         signOut();
     }
 
+    /**
+     * Sign in user with firebase.
+     * @param email
+     * @param password
+     */
     public void signIn(String email, String password) {
         Log.i(TAG, "Validating input");
         if(!isValidUserInput(email, password)) {
@@ -116,6 +127,12 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signOut();
     }
 
+    /**
+     * Validate user input.
+     * @param email
+     * @param password
+     * @return true if is valid input
+     */
     private boolean isValidUserInput(String email, String password) {
         try {
             if (TextUtils.isEmpty(email)) {

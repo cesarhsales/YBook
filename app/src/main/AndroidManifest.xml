@@ -21,8 +21,8 @@
         <activity android:name=".SendNewPasswordLinkActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".UpdatePassword" />
-        <activity android:name=".BookListActivity" />
-        <activity android:name=".BookActivity"></activity>
+        <activity android:name=".BookActivity" />
+        <activity android:name=".BookListActivity"></activity>
     </application>
 
 </manifest>

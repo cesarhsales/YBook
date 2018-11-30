@@ -25,13 +25,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -41,26 +39,25 @@
                 android:id="@+id/addEditBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:layout_marginLeft="80dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/addEditBook"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/bookTitle"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/checkRead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/bookTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.081"
                 app:layout_constraintStart_toEndOf="@+id/addEditBook"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
@@ -76,10 +73,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
+                android:hint="@string/bookTitle"
                 android:inputType="text"
-                android:text="@string/bookTitle"
                 app:layout_constraintBottom_toTopOf="@+id/bookType"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addEditBook" />
 
@@ -94,11 +92,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
+                android:hint="Type"
                 android:inputType="text"
-                android:text="Type"
                 app:layout_constraintBottom_toTopOf="@+id/bookAuthor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bookTitle" />
 
@@ -113,11 +111,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
+                android:hint="@string/bookAuthor"
                 android:inputType="textPersonName"
-                android:text="@string/bookAuthor"
                 app:layout_constraintBottom_toTopOf="@+id/bookYearPublished"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bookType" />
 
@@ -132,11 +130,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
+                android:hint="@string/bookYearPublished"
                 android:inputType="number"
-                android:text="@string/bookYearPublished"
                 app:layout_constraintBottom_toTopOf="@+id/bookNumPages"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bookAuthor" />
 
@@ -151,11 +149,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
+                android:hint="@string/bookNumPages"
                 android:inputType="number"
-                android:text="@string/bookNumPages"
                 app:layout_constraintBottom_toTopOf="@+id/bookComments"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bookYearPublished" />
 
@@ -170,11 +168,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
+                android:hint="@string/bookComments"
                 android:inputType="textMultiLine"
-                android:text="@string/bookComments"
                 app:layout_constraintBottom_toTopOf="@+id/bookSave"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bookNumPages" />
 
@@ -182,14 +180,13 @@
                 android:id="@+id/bookSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:background="@color/yellow"
                 android:text="@string/bookSave"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bookComments" />
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
