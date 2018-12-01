@@ -4,8 +4,8 @@ public class Book {
     private String title;
     private String type;
     private String author;
-    private int year;
-    private int pages;
+    private String year;
+    private String pages;
     private String comments;
     private boolean isRead;
     private int position;
@@ -15,7 +15,7 @@ public class Book {
     }
 
     public Book(String title, String type, String author,
-                int year, int pages, String comments) {
+                String year, String pages, String comments) {
         this.title = title;
         this.type = type;
         this.author = author;
@@ -25,7 +25,7 @@ public class Book {
     }
 
     public Book(String title, String type, String author,
-                int year, int pages, String comments, boolean isRead, int position) {
+                String year, String pages, String comments, boolean isRead, int position) {
         this.title = title;
         this.type = type;
         this.author = author;
@@ -55,16 +55,16 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-    public int getYear() {
+    public String getYear() {
         return year;
     }
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
-    public int getPages() {
+    public String getPages() {
         return pages;
     }
-    public void setPages(int pages) {
+    public void setPages(String pages) {
         this.pages = pages;
     }
     public boolean isRead() {

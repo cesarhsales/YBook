@@ -36,31 +36,19 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/addEditBook"
+                android:id="@+id/addBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/addEditBook"
+                android:text="@string/addBook"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/bookTitle"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <CheckBox
-                android:id="@+id/checkRead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/bookTitle"
-                app:layout_constraintStart_toEndOf="@+id/addEditBook"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/bookTitle"
@@ -79,7 +67,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addEditBook" />
+                app:layout_constraintTop_toBottomOf="@+id/addBook" />
 
             <EditText
                 android:id="@+id/bookType"
@@ -92,7 +80,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Type"
+                android:hint="@string/bookType"
                 android:inputType="text"
                 app:layout_constraintBottom_toTopOf="@+id/bookAuthor"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +148,7 @@
             <EditText
                 android:id="@+id/bookComments"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="43dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
@@ -170,7 +158,7 @@
                 android:ems="10"
                 android:hint="@string/bookComments"
                 android:inputType="textMultiLine"
-                app:layout_constraintBottom_toTopOf="@+id/bookSave"
+                app:layout_constraintBottom_toTopOf="@+id/checkRead"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -180,13 +168,29 @@
                 android:id="@+id/bookSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
                 android:background="@color/yellow"
                 android:text="@string/bookSave"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/checkRead"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <CheckBox
+                android:id="@+id/checkRead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/readBook"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bookComments" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

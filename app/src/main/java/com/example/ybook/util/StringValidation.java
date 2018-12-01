@@ -1,5 +1,6 @@
 package com.example.ybook.util;
 
+import com.example.ybook.customexceptions.CharacterLengthException;
 import com.example.ybook.customexceptions.StringFormatException;
 import com.example.ybook.customexceptions.StringInvalidCharactersException;
 import com.example.ybook.customexceptions.StringLengthException;
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 
 public  class StringValidation {
     private static final Integer PASSWORD_LENGTH = 8;
+    private static final Integer CHAR_LENGTH = 200;
 
     public static void isValidUsername(String username) throws StringInvalidCharactersException {
         String usernameInvalidCharacters = ".*[\\s!=#$%^&*(),;?\"':{}|<>].*";
@@ -34,5 +36,11 @@ public  class StringValidation {
     private static boolean testStringPatternMatch(String rule, String input) {
         Pattern pattern = Pattern.compile(rule);
         return pattern.matches(rule, input);
+    }
+
+    public static void isValidCharacterCount(String string) throws CharacterLengthException {
+        if(string.length() > CHAR_LENGTH) {
+            throw new CharacterLengthException("Maximum character limit allowed is 200.");
+        }
     }
 }

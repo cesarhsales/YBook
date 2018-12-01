@@ -48,20 +48,21 @@ public class BookListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
+
                 User user = dataSnapshot.child("users").child(currentUser.getUid())
                         .getValue(User.class);
+                if (user != null) {
+                    Log.i("BookListActivity", "User:" + user.getEmail());
 
-                Log.i("BookListActivity", "User:"+user.getEmail());
+                    //Create the list adapter
+                    BookListAdapter adapter = new BookListAdapter(BookListActivity.this,
+                            generateData(user.getBooks()));
 
-                //Create the list adapter
-                BookListAdapter adapter = new BookListAdapter(BookListActivity.this,
-                        generateData(user.getBooks()));
-
-                //Set the adapter updating the UI
-                ListView list = findViewById(R.id.booksListView);
-                list.setAdapter(adapter);
+                    //Set the adapter updating the UI
+                    ListView list = findViewById(R.id.booksListView);
+                    list.setAdapter(adapter);
+                }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -78,10 +79,15 @@ public class BookListActivity extends AppCompatActivity {
 
         if (books != null) {
             for (Book b : books) {
-                models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px, b.getTitle()));
+                if(b.isRead()) {
+                    models.add(new BookListModel(R.drawable.ic_baseline_star_24px, b.getTitle()));
+                }
+                else {
+                    models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px, b.getTitle()));
+                }
+
             }
         }
-
         return models;
     }
 }
