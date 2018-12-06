@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class BookListActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
@@ -27,6 +31,21 @@ public class BookListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_list);
+
+        //SHARED HEADER - MAKE IMAGE CLICKABLE
+        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+        Log.i("SharedHeader", "about to set listener...");
+
+        profileImage.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.i("SharedHeader", "clicked");
+                        Intent intent = new Intent(BookListActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+
+            }
+        });
 
         ImageButton add = findViewById(R.id.addItemIcon);
 

@@ -1,5 +1,6 @@
 package com.example.ybook;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class BookActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
@@ -39,19 +42,6 @@ public class BookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
-
-        /*
-        //MOCKS FOR TESTING PURPOSES
-        Book book1 = new Book("Star Wars", "Fantasy", "George Lucas", 1980,
-                300, "No comments.", true, 1);
-
-        Book book2 = new Book("Star Wars 2", "Fantasy", "George Lucas", 1982,
-                300, "No comments.", false, 2);
-
-        List<Book> books = new ArrayList<>();
-        books.add(book1);
-        books.add(book2);
-        */
 
         title = (EditText) findViewById(R.id.bookTitle);
         type = (EditText) findViewById(R.id.bookType);
@@ -122,6 +112,21 @@ public class BookActivity extends AppCompatActivity {
                  }
              }
          });
+
+        //SHARED HEADER - MAKE IMAGE CLICKABLE
+        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+        Log.i("SharedHeader", "about to set listener...");
+
+        profileImage.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.i("SharedHeader", "clicked");
+                Intent intent = new Intent(BookActivity.this, ProfileActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     /**

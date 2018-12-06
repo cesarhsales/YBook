@@ -23,4 +23,5 @@
     <string name="itemTitle">Item</string>
     <string name="favIconBorder">favIcon</string>
     <string name="addIconText">addIcon</string>
+    <string name="profileTitle">Profile</string>
 </resources>
