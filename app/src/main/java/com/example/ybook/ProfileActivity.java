@@ -44,6 +44,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         btnChoose = (Button) findViewById(R.id.chooseProfileImg);
         btnUpload = (Button) findViewById(R.id.saveProfile);
         imageView = (ImageView) findViewById(R.id.defaultProfileImage);
