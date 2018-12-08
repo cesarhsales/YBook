@@ -1,6 +1,8 @@
 package com.example.ybook;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,8 +13,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.ybook.customexceptions.CharacterLengthException;
 import com.example.ybook.util.StringValidation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -21,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +45,10 @@ public class BookActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private List<Book> books;
     private User user;
+
+    //Firebase
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +121,9 @@ public class BookActivity extends AppCompatActivity {
                      databaseReference.child("users").child(currentUser.getUid()).setValue(user);
 
                      Toast.makeText(BookActivity.this, "Book saved.", Toast.LENGTH_LONG).show();
+
+                     Intent intent = new Intent(BookActivity.this, BookListActivity.class);
+                     startActivity(intent);
                  }
              }
          });
@@ -125,6 +140,34 @@ public class BookActivity extends AppCompatActivity {
                 Intent intent = new Intent(BookActivity.this, ProfileActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+
+
+        //GET PROFILE IMAGE
+        storageReference.child("images/"+ currentUser.getUid())
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        RequestOptions requestOptions = new RequestOptions();
+                        requestOptions.placeholder(R.drawable.profile_img);
+                        requestOptions.error(R.drawable.profile_img);
+
+                        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+                        Glide.with(BookActivity.this)
+                                .load(uri)
+                                .apply(requestOptions)
+                                .into(profileImage);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("BookListActivity", "Unable to download profile image! " + exception);
             }
         });
     }

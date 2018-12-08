@@ -1,15 +1,22 @@
 package com.example.ybook;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +36,47 @@ public class BookListActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
 
+    //Firebase
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_list);
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //GET PROFILE IMAGE
+        storageReference.child("images/"+ currentUser.getUid())
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.drawable.profile_img);
+                requestOptions.error(R.drawable.profile_img);
+
+                CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+                Glide.with(BookListActivity.this)
+                        .load(uri)
+                        .apply(requestOptions)
+                        .into(profileImage);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("BookListActivity", "Unable to download profile image! " + exception);
+            }
+        });
+
         //SHARED HEADER - MAKE IMAGE CLICKABLE
-        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+        //|CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
         Log.i("SharedHeader", "about to set listener...");
 
+        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
         profileImage.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {

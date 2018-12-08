@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login, signUp;
     private TextView forgotPassword;
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +86,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        Log.i(TAG, "Signing out");
-        //todo remove!
-        signOut();
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(currentUser != null) {
+            startActivity(new Intent(LoginActivity.this,
+                    BookListActivity.class));
+        }
     }
 
     /**
@@ -110,7 +114,6 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
                         startActivity(new Intent(LoginActivity.this,
                                 BookListActivity.class));
                     } else {
