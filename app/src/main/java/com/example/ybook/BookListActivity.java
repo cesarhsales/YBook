@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,7 +33,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BookListActivity extends AppCompatActivity {
+public class BookListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
 
@@ -44,7 +45,6 @@ public class BookListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_list);
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -120,7 +120,9 @@ public class BookListActivity extends AppCompatActivity {
 
                     //Set the adapter updating the UI
                     ListView list = findViewById(R.id.booksListView);
+                    list.setOnItemClickListener(BookListActivity.this);
                     list.setAdapter(adapter);
+
                 }
             }
             @Override
@@ -149,5 +151,14 @@ public class BookListActivity extends AppCompatActivity {
             }
         }
         return models;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Log.i("HOWDY", "You clicked Item: " + id + " at position:" + position);
+        Intent intent = new Intent();
+        intent.setClass(BookListActivity.this, BookActivity.class);
+        intent.putExtra("position", position);
+        startActivity(intent);
     }
 }

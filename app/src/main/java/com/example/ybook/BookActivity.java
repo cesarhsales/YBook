@@ -45,6 +45,8 @@ public class BookActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private List<Book> books;
     private User user;
+    int position;
+    private boolean isEdit;
 
     //Firebase
     private FirebaseStorage storage;
@@ -54,6 +56,11 @@ public class BookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
+
+        // Receive position in list to allow book editing
+        Intent intent = getIntent();
+        position = intent.getIntExtra("position", -1);
+        Log.i("Position", String.valueOf(position));
 
         title = (EditText) findViewById(R.id.bookTitle);
         type = (EditText) findViewById(R.id.bookType);
@@ -65,6 +72,7 @@ public class BookActivity extends AppCompatActivity {
         read = findViewById(R.id.checkRead);
         mAuth = FirebaseAuth.getInstance();
         books = new ArrayList<>();
+        isEdit = false;
 
         //GET CURRENT USER AND FIREBASE REFERENCES
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -82,8 +90,13 @@ public class BookActivity extends AppCompatActivity {
                 // USER WILL BE NULL UNTIL FIRST BOOK IS ADDED TO FIREBASE
                 // NEED TO ACCOUNT FOR THAT
                 if (user != null) {
-                    Log.i("howdy", "User:" + user.getEmail());
+                    Log.i("BookListActivity", "User:" + user.getEmail());
+
+                    // SET VALUES OF BOOK LIST TO STORED USER BOOK LIST
                     books = user.getBooks();
+
+                    // LOAD CLICKED BOOK IN LIST ACCORDING TO POSITION
+                    load(position);
                 }
             }
             @Override
@@ -105,14 +118,26 @@ public class BookActivity extends AppCompatActivity {
         SaveBook.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 if (isValidInput(title.getText().toString(), type.getText().toString(),
-                         author.getText().toString(), year.getText().toString(),
-                         numPages.getText().toString(), comments.getText().toString())){
 
+                 // Add book to list if User clicked the button to add
+                 if (!isEdit){
                      books.add(addBook(title.getText().toString(), type.getText().toString(),
                              author.getText().toString(), year.getText().toString(),
                              numPages.getText().toString(), comments.getText().toString()));
 
+                 }
+                 // If list is clicked, save new book values at current book location in list
+                 else if(isEdit){
+                     books.set(position, addBook(title.getText().toString(), type.getText().toString(),
+                             author.getText().toString(), year.getText().toString(),
+                             numPages.getText().toString(), comments.getText().toString()));
+
+                 }
+
+                 // Make sure input in book fields is valid
+                 if(isValidInput(title.getText().toString(), type.getText().toString(),
+                         author.getText().toString(), year.getText().toString(),
+                         numPages.getText().toString(), comments.getText().toString())){
                      //SET NEW USER
                      User user = new User(currentUser.getDisplayName(), currentUser.getEmail(), books);
 
@@ -124,6 +149,7 @@ public class BookActivity extends AppCompatActivity {
 
                      Intent intent = new Intent(BookActivity.this, BookListActivity.class);
                      startActivity(intent);
+
                  }
              }
          });
@@ -243,6 +269,28 @@ public class BookActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Load book values into EditText fields for editing/viewing
+     * Book values are loaded into appropriate EditText fields. Position
+     * is passed to ensure that correct book is loaded, according to which
+     * is clicked in the ListView. Loading of values only occurs if a book in the displayed
+     * Book List is clicked, checked by the passed position parameter.
+     * @param position
+     */
+    public void load(int position){
+        if(position >= 0){
+            isEdit = true;
+            Log.i("LOAD", "Book array size: " + String.valueOf(books.size()));
+            title.setText(books.get(position).getTitle());
+            type.setText(books.get(position).getType());
+            author.setText(books.get(position).getAuthor());
+            year.setText(books.get(position).getYear());
+            numPages.setText(books.get(position).getPages());
+            comments.setText(books.get(position).getComments());
+            read.setChecked(books.get(position).isRead());
+        }
     }
 
 }
