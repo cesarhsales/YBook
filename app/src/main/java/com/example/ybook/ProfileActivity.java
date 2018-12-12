@@ -40,9 +40,9 @@ import java.io.IOException;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
-    private Button btnChoose, btnUpload;
+    private Button btnChoose, btnUpload, btnLogout;
     private ImageView imageView;
-
+    private FirebaseAuth mAuth;
     private Uri filePath;
 
     private final int PICK_IMAGE_REQUEST = 71;
@@ -62,9 +62,13 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        //Get a instance of firebase library
+        mAuth = FirebaseAuth.getInstance();
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        btnLogout = (Button) findViewById(R.id.btnLogOut);
         btnChoose = (Button) findViewById(R.id.chooseProfileImg);
         btnUpload = (Button) findViewById(R.id.saveProfile);
         imageView = (ImageView) findViewById(R.id.defaultProfileImage);
@@ -105,6 +109,15 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class );
+                startActivity(intent);
             }
         });
 
