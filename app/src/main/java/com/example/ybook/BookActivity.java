@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -90,10 +91,16 @@ public class BookActivity extends AppCompatActivity {
                 // USER WILL BE NULL UNTIL FIRST BOOK IS ADDED TO FIREBASE
                 // NEED TO ACCOUNT FOR THAT
                 if (user != null) {
+                    //Set username in shared header
+                    TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
+                    sharedUsername.setText(user.getUsername());
+
                     Log.i("BookListActivity", "User:" + user.getEmail());
 
-                    // SET VALUES OF BOOK LIST TO STORED USER BOOK LIST
-                    books = user.getBooks();
+                    if(user.getBooks() != null) {
+                        // SET VALUES OF BOOK LIST TO STORED USER BOOK LIST
+                        books = user.getBooks();
+                    }
 
                     // LOAD CLICKED BOOK IN LIST ACCORDING TO POSITION
                     load(position);

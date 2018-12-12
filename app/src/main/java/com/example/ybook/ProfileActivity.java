@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -20,10 +23,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -42,6 +52,10 @@ public class ProfileActivity extends AppCompatActivity {
     StorageReference storageReference;
 
     private FirebaseUser currentUser;
+    private DatabaseReference databaseReference;
+
+    private User user;
+    boolean hasUpdate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +68,31 @@ public class ProfileActivity extends AppCompatActivity {
         btnChoose = (Button) findViewById(R.id.chooseProfileImg);
         btnUpload = (Button) findViewById(R.id.saveProfile);
         imageView = (ImageView) findViewById(R.id.defaultProfileImage);
+
+        //THIS EVENTLISTENER IS REPONSIBLE FOR CHECKING FOR CHANGES
+        //SO IT UPDATES AS NEEDED
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                user = dataSnapshot.child("users").child(currentUser.getUid())
+                        .getValue(User.class);
+
+                if (user != null) {
+                    TextView username = findViewById(R.id.profileUsername);
+                    username.setText(user.getUsername());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("ProfileActivity", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        //Adding the listener to firebase reference
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.addValueEventListener(postListener);
 
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +107,6 @@ public class ProfileActivity extends AppCompatActivity {
                 uploadImage();
             }
         });
-
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -126,6 +163,23 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
+        EditText username = findViewById(R.id.profileUsername);
+
+        Log.i("ProfileActivity", "User: " + user);
+
+        if(user != null) {
+            //SET NEW USER
+            User userProfile = new User(user.getUsername(), user.getEmail(), user.getBooks());
+            userProfile.setUsername(username.getText().toString());
+
+            Log.i("ProfileActivity", "userProfile: " + user.getUsername());
+
+            //GET FIREBASE REFERENCE AND STORE A VALUE USING SETVALUE()
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            databaseReference.child("users").child(currentUser.getUid()).setValue(userProfile);
+
+            hasUpdate = true;
+        }
 
         if(filePath != null)
         {
@@ -162,6 +216,11 @@ public class ProfileActivity extends AppCompatActivity {
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
+        }
+
+        if(hasUpdate && filePath == null) {
+            Intent intent = new Intent(ProfileActivity.this, BookListActivity.class);
+            startActivity(intent);
         }
     }
 }

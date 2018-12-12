@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -112,6 +113,10 @@ public class BookListActivity extends AppCompatActivity implements AdapterView.O
                 User user = dataSnapshot.child("users").child(currentUser.getUid())
                         .getValue(User.class);
                 if (user != null) {
+                    //Set username in shared header
+                    TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
+                    sharedUsername.setText(user.getUsername());
+
                     Log.i("BookListActivity", "User:" + user.getEmail());
 
                     //Create the list adapter
