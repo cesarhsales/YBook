@@ -16,10 +16,10 @@
     <string name="bookAuthor">Author</string>
     <string name="bookYearPublished">Year Published</string>
     <string name="bookNumPages">Number of Pages</string>
-    <string name="bookComments">Comments:</string>
+    <string name="bookComments">Comments</string>
     <string name="bookSave">Save</string>
     <string name="addBook">Add/Edit Book</string>
-    <string name="readBook">Read Book?</string>
+    <string name="readBook">Favorite!</string>
     <string name="itemTitle">Item</string>
     <string name="favIconBorder">favIcon</string>
     <string name="addIconText">addIcon</string>
