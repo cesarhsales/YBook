@@ -145,13 +145,17 @@ public class BookActivity extends AppCompatActivity {
                  if(isValidInput(title.getText().toString(), type.getText().toString(),
                          author.getText().toString(), year.getText().toString(),
                          numPages.getText().toString(), comments.getText().toString())){
+                     storageReference = storage.getReference();
+
+                     databaseReference = FirebaseDatabase.getInstance().getReference();
                      //SET NEW USER
-                     User user = new User(currentUser.getDisplayName(), currentUser.getEmail(), books);
+                     //User user = new User(currentUser.getDisplayName(), currentUser.getEmail(), books);
+
 
                      //GET FIREBASE REFERENCE AND STORE A VALUE USING SETVALUE()
                      databaseReference = FirebaseDatabase.getInstance().getReference();
-                     databaseReference.child("users").child(currentUser.getUid()).setValue(user);
-
+                     databaseReference.child("users").child(currentUser.getUid())
+                             .child("books").setValue(books);
                      Toast.makeText(BookActivity.this, "Book saved.", Toast.LENGTH_LONG).show();
 
                      Intent intent = new Intent(BookActivity.this, BookListActivity.class);

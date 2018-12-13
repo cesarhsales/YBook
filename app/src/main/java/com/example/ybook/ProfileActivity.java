@@ -182,7 +182,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         if(user != null) {
             //SET NEW USER
-            User userProfile = new User(user.getUsername(), user.getEmail(), user.getBooks());
+            //User userProfile = new User(user.getUsername(), user.getEmail(), user.getBooks());
+            User userProfile = new User(currentUser.getDisplayName(), user.getEmail(), user.getBooks());
             userProfile.setUsername(username.getText().toString());
 
             Log.i("ProfileActivity", "userProfile: " + user.getUsername());
