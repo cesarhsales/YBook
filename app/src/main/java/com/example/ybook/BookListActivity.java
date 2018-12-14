@@ -146,11 +146,12 @@ public class BookListActivity extends AppCompatActivity implements AdapterView.O
 
         if (books != null) {
             for (Book b : books) {
-                if(b.isRead()) {
-                    models.add(new BookListModel(R.drawable.ic_baseline_star_24px, b.getTitle()));
-                }
-                else {
-                    models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px, b.getTitle()));
+                if(b!=null) {
+                    if (b.isRead()) {
+                        models.add(new BookListModel(R.drawable.ic_baseline_star_24px, b.getTitle()));
+                    } else {
+                        models.add(new BookListModel(R.drawable.ic_baseline_star_border_24px, b.getTitle()));
+                    }
                 }
 
             }
@@ -160,7 +161,6 @@ public class BookListActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Log.i("HOWDY", "You clicked Item: " + id + " at position:" + position);
         Intent intent = new Intent();
         intent.setClass(BookListActivity.this, BookActivity.class);
         intent.putExtra("position", position);

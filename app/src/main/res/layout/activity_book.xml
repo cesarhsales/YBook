@@ -35,6 +35,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/bookDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/yellow"
+                android:text="@string/bookDelete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/bookSave"
+                app:layout_constraintTop_toBottomOf="@+id/checkFavorite" />
+
             <TextView
                 android:id="@+id/addBook"
                 android:layout_width="wrap_content"
@@ -170,19 +184,20 @@
                 android:background="@color/yellow"
                 android:text="@string/bookSave"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bookDelete"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkRead"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/checkFavorite"
+                app:layout_constraintVertical_bias="0.0" />
 
             <CheckBox
-                android:id="@+id/checkRead"
+                android:id="@+id/checkFavorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/readBook"
+                android:text="@string/favoriteBook"
                 android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

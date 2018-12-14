@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,9 +39,9 @@ public class BookActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
     private EditText title, type, author, year, numPages, comments;
-    private Button SaveBook;
+    private Button SaveBook, DeleteBook;
     private Book book;
-    private CheckBox read;
+    private CheckBox favorite;
     private FirebaseAuth mAuth;
     private List<Book> books;
     private User user;
@@ -58,7 +57,7 @@ public class BookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
-        // Receive position in list to allow book editing
+        // RECEIVE POSITION IN LIST TO ALLOW BOOK EDITING
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
         Log.i("Position", String.valueOf(position));
@@ -70,7 +69,8 @@ public class BookActivity extends AppCompatActivity {
         numPages = (EditText) findViewById(R.id.bookNumPages);
         comments = (EditText) findViewById(R.id.bookComments);
         SaveBook = (Button) findViewById(R.id.bookSave);
-        read = findViewById(R.id.checkRead);
+        DeleteBook = (Button) findViewById(R.id.bookDelete);
+        favorite = findViewById(R.id.checkFavorite);
         mAuth = FirebaseAuth.getInstance();
         books = new ArrayList<>();
         isEdit = false;
@@ -102,8 +102,12 @@ public class BookActivity extends AppCompatActivity {
                         books = user.getBooks();
                     }
 
-                    // LOAD CLICKED BOOK IN LIST ACCORDING TO POSITION
-                    load(position);
+                    // LOAD CLICKED BOOK IN LIST ACCORDING TO POSITION IN LIST
+                    // BUT ONLY IF BOOK IS ACCESSED DIRECTLY FROM LIST
+                    if(position > -1 && position <= books.size() -1 )
+                    {
+                        load(position);
+                    }
                 }
             }
             @Override
@@ -122,6 +126,12 @@ public class BookActivity extends AppCompatActivity {
             finish();
         }
 
+        /**
+         * Save book to list.
+         * Book will be added to the book list (at the top) only if the add book
+         * button (on the BookListActivity was clicked. If a list item was clicked,
+         * the edited book values will be saved in the same position on the list.
+         */
         SaveBook.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -147,7 +157,7 @@ public class BookActivity extends AppCompatActivity {
                          numPages.getText().toString(), comments.getText().toString())){
                      storageReference = storage.getReference();
 
-                     databaseReference = FirebaseDatabase.getInstance().getReference();
+                     //databaseReference = FirebaseDatabase.getInstance().getReference();
                      //SET NEW USER
                      //User user = new User(currentUser.getDisplayName(), currentUser.getEmail(), books);
 
@@ -157,13 +167,31 @@ public class BookActivity extends AppCompatActivity {
                      databaseReference.child("users").child(currentUser.getUid())
                              .child("books").setValue(books);
                      Toast.makeText(BookActivity.this, "Book saved.", Toast.LENGTH_LONG).show();
-
                      Intent intent = new Intent(BookActivity.this, BookListActivity.class);
                      startActivity(intent);
-
+                     finish();
                  }
              }
          });
+
+        /**
+         * Delete book from list
+         * Book will be deleted from Book List at its location.
+         */
+        DeleteBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isEdit){
+                    delete(position);
+                    Intent intent = new Intent(BookActivity.this, BookListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Toast.makeText(BookActivity.this, "Only saved books can be deleted.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         //SHARED HEADER - MAKE IMAGE CLICKABLE
         CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
@@ -172,7 +200,6 @@ public class BookActivity extends AppCompatActivity {
         profileImage.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Log.i("SharedHeader", "clicked");
                 Intent intent = new Intent(BookActivity.this, ProfileActivity.class);
                 startActivity(intent);
@@ -180,33 +207,32 @@ public class BookActivity extends AppCompatActivity {
             }
         });
 
+        //GET PROFILE IMAGE
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        if(currentUser.getUid()!= null) {
+            storageReference.child("images/" + currentUser.getUid())
+                    .getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.placeholder(R.drawable.profile_img);
+                            requestOptions.error(R.drawable.profile_img);
 
-
-
-        //GET PROFILE IMAGE
-        storageReference.child("images/"+ currentUser.getUid())
-                .getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.placeholder(R.drawable.profile_img);
-                        requestOptions.error(R.drawable.profile_img);
-
-                        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
-                        Glide.with(BookActivity.this)
-                                .load(uri)
-                                .apply(requestOptions)
-                                .into(profileImage);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e("BookListActivity", "Unable to download profile image! " + exception);
-            }
-        });
+                            CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+                            Glide.with(BookActivity.this)
+                                    .load(uri)
+                                    .apply(requestOptions)
+                                    .into(profileImage);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.e("BookListActivity", "Unable to download profile image! " + exception);
+                }
+            });
+        }
     }
 
     /**
@@ -225,9 +251,7 @@ public class BookActivity extends AppCompatActivity {
         if(isValidInput(title, type, author, pages, year, comments)) {
             // Create new book w/ values
             book = new Book(title, type, author, year, pages, comments);
-            if (read.isChecked()) {
-                Toast.makeText(BookActivity.this, "Checked.",
-                        Toast.LENGTH_LONG).show();
+            if (favorite.isChecked()) {
                 book.setRead(true);
             } else {
                 book.setRead(false);
@@ -300,8 +324,33 @@ public class BookActivity extends AppCompatActivity {
             year.setText(books.get(position).getYear());
             numPages.setText(books.get(position).getPages());
             comments.setText(books.get(position).getComments());
-            read.setChecked(books.get(position).isRead());
+            favorite.setChecked(books.get(position).isRead());
         }
     }
 
+    /**
+     * Delete currently selected book from list.
+     * Book is deleted from list stored in firebase
+     * at the passed position in the list.
+     * @param position
+     */
+    public void delete(int position){
+        if(position >= 0){
+            // DELETE BOOK FROM ITS POSITION IN THE LIST
+            isEdit = true;
+            Log.i("DELETE", "Book array size before: " + String.valueOf(books.size()));
+            books.remove(position);
+            Log.i("DELETE", "Book array size after: " + String.valueOf(books.size()));
+
+            // RESET POSITION TO ORIGINAL VALUE, PREVENTING CALL
+            // TO LOAD(INT) AGAIN
+            this.position = -1;
+
+            // UPDATE LIST ON FIREBASE
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            databaseReference.child("users").child(currentUser.getUid())
+                    .child("books").setValue(books);
+            Toast.makeText(BookActivity.this, "Book deleted.", Toast.LENGTH_LONG).show();
+        }
+    }
 }
