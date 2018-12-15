@@ -7,10 +7,21 @@ import com.example.ybook.customexceptions.StringLengthException;
 
 import java.util.regex.Pattern;
 
+/**
+ * Class responsible for defining means of validating user input
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public  class StringValidation {
     private static final Integer PASSWORD_LENGTH = 8;
     private static final Integer CHAR_LENGTH = 200;
 
+    /**
+     * Validates username input
+     * @param username
+     * @throws StringInvalidCharactersException
+     */
     public static void isValidUsername(String username) throws StringInvalidCharactersException {
         String usernameInvalidCharacters = ".*[\\s!=#$%^&*(),;?\"':{}|<>].*";
 
@@ -20,6 +31,11 @@ public  class StringValidation {
                     "Username allowed characters: 0-9, a-zA-Z and \".\"");
     }
 
+    /**
+     * Validates email input
+     * @param email
+     * @throws StringFormatException
+     */
     public static void isValidEmail(String email) throws StringFormatException {
         String emailFormat = "^(.+)@(.+)$";
 
@@ -28,6 +44,11 @@ public  class StringValidation {
             throw new StringFormatException("Invalid email format");
     }
 
+    /**
+     * Validates password length
+     * @param password
+     * @throws StringLengthException
+     */
     public static void isValidPasswordLength (String password) throws StringLengthException {
         if (password.length() < PASSWORD_LENGTH)
             throw new StringLengthException("Password must contain at least 8 characters");
@@ -38,6 +59,11 @@ public  class StringValidation {
         return pattern.matches(rule, input);
     }
 
+    /**
+     * Validates input length
+     * @param string
+     * @throws CharacterLengthException
+     */
     public static void isValidCharacterCount(String string) throws CharacterLengthException {
         if(string.length() > CHAR_LENGTH) {
             throw new CharacterLengthException("Maximum character limit allowed is 200.");

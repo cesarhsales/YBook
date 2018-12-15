@@ -1,13 +1,17 @@
 package com.example.ybook;
 
 import android.media.Image;
-import android.net.Uri;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.List;
 
+/**
+ * Class responsible for representing the user
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 @IgnoreExtraProperties
 public class User {
     private String username;
@@ -15,15 +19,29 @@ public class User {
     private Image profileImage;
     private List<Book> books;
 
+    /**
+     * Default constructor required for calls to DataSnapshot.getValue(User.class)
+     */
     public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+
     }
 
+    /**
+     * Non default constructor
+     * @param username
+     * @param email
+     */
     public User(String username, String email) {
         this.username = username;
         this.email = email;
     }
 
+    /**
+     * Non default constructor
+     * @param username
+     * @param email
+     * @param books
+     */
     public User(String username, String email, List<Book> books) {
         this.username = username;
         this.email = email;

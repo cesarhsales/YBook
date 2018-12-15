@@ -35,6 +35,12 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Class responsible for displaying the screen to add, edit and delete a book
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public class BookActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser currentUser;
@@ -270,7 +276,7 @@ public class BookActivity extends AppCompatActivity {
      * @param pages
      * @param year
      * @param comments
-     * @return
+     * @return true if the input is valid, false if not
      */
     public boolean isValidInput(String title, String type, String author, String pages, String year,
                                 String comments){

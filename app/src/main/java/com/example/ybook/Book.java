@@ -1,5 +1,11 @@
 package com.example.ybook;
 
+/**
+ * The class responsible for abstracting a book
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public class Book {
     private String title;
     private String type;
@@ -10,10 +16,22 @@ public class Book {
     private boolean isRead;
     private int position;
 
+    /**
+     * Default constructor required for calls to DataSnapshot.getValue(User.class)
+     */
     public Book() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+
     }
 
+    /**
+     * Non default constructor
+     * @param title
+     * @param type
+     * @param author
+     * @param year
+     * @param pages
+     * @param comments
+     */
     public Book(String title, String type, String author,
                 String year, String pages, String comments) {
         this.title = title;
@@ -24,6 +42,17 @@ public class Book {
         this.comments = comments;
     }
 
+    /**
+     * Non default constructor
+     * @param title
+     * @param type
+     * @param author
+     * @param year
+     * @param pages
+     * @param comments
+     * @param isRead
+     * @param position
+     */
     public Book(String title, String type, String author,
                 String year, String pages, String comments, boolean isRead, int position) {
         this.title = title;

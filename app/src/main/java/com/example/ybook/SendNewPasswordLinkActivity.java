@@ -15,6 +15,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Class responsible for the logic of resetting the password
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public class SendNewPasswordLinkActivity extends AppCompatActivity {
     String TAG = "SendNewPasswordLinkActivity";
     private EditText email;

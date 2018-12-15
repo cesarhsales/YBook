@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +32,16 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Class responsible for displaying the edit profile screen
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public class ProfileActivity extends AppCompatActivity {
     private Button btnChoose, btnUpload, btnLogout;
     private ImageView imageView;

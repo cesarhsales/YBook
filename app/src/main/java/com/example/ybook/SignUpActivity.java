@@ -22,6 +22,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+/**
+ * Class responsible for the logic to sign a new user
+ * @author Cesar Sales, David Souza, Evan Harrison
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
@@ -64,6 +70,13 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates a new account with the provided information
+     * @param username
+     * @param email
+     * @param password
+     * @param confirmPassword
+     */
     public void createAccount(final String username, final String email, String password,
                               String confirmPassword) {
         Log.i(TAG, "Validating input");

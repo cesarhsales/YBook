@@ -8,14 +8,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class responsible for defining the books list adapter
+ * @author Cesar Sales
+ * @version 1.0
+ * @since December, 15, 2018
+ */
 public class BookListAdapter extends ArrayAdapter<BookListModel> {
 
     private final Context context;
     private final List<BookListModel> modelsArrayList;
 
+    /**
+     * Non default constructor
+     * @param context
+     * @param modelsArrayList
+     */
     public BookListAdapter(Context context, List<BookListModel> modelsArrayList) {
         super(context, R.layout.list_item, modelsArrayList);
 
