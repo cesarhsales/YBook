@@ -48,7 +48,7 @@ public class BookActivity extends AppCompatActivity {
     int position;
     private boolean isEdit;
 
-    //Firebase
+    //FIREBASE VARIABLES
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -57,11 +57,12 @@ public class BookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
-        // RECEIVE POSITION IN LIST TO ALLOW BOOK EDITING
+        // RECEIVE POSITION FROM LIST IN BOOKLISTACTIVITY TO ALLOW BOOK EDITING
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
         Log.i("Position", String.valueOf(position));
 
+        // INITIALIZE FIELDS
         title = (EditText) findViewById(R.id.bookTitle);
         type = (EditText) findViewById(R.id.bookType);
         author = (EditText) findViewById(R.id.bookAuthor);
@@ -91,12 +92,10 @@ public class BookActivity extends AppCompatActivity {
                 // USER WILL BE NULL UNTIL FIRST BOOK IS ADDED TO FIREBASE
                 // NEED TO ACCOUNT FOR THAT
                 if (user != null) {
-                    //Set username in shared header
+                    // SET USERNAME IN SHARED HEADER
                     TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
                     sharedUsername.setText(user.getUsername());
-
                     Log.i("BookListActivity", "User:" + user.getEmail());
-
                     if(user.getBooks() != null) {
                         // SET VALUES OF BOOK LIST TO STORED USER BOOK LIST
                         books = user.getBooks();
@@ -112,12 +111,11 @@ public class BookActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
+                // LOG FAILED MESSAGE
                 Log.w("BookListActivity", "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         };
-        //Add the listener to firebase reference
+        //ADD LISTENER TO FIREBASE DATABASE REFERENCE
         databaseReference.addValueEventListener(preListener);
 
 
@@ -135,32 +133,27 @@ public class BookActivity extends AppCompatActivity {
         SaveBook.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-
-                 // Add book to list if User clicked the button to add
-                 if (!isEdit){
-                     books.add(addBook(title.getText().toString(), type.getText().toString(),
-                             author.getText().toString(), year.getText().toString(),
-                             numPages.getText().toString(), comments.getText().toString()));
-
-                 }
-                 // If list is clicked, save new book values at current book location in list
-                 else if(isEdit){
-                     books.set(position, addBook(title.getText().toString(), type.getText().toString(),
-                             author.getText().toString(), year.getText().toString(),
-                             numPages.getText().toString(), comments.getText().toString()));
-
-                 }
-
-                 // Make sure input in book fields is valid
+                 // MAKE SURE INPUT IS VALID FIRST
                  if(isValidInput(title.getText().toString(), type.getText().toString(),
                          author.getText().toString(), year.getText().toString(),
                          numPages.getText().toString(), comments.getText().toString())){
+
+                     // ADD BOOK TO LIST IF ADD BOOK BUTTON IS CLICKED
+                     if (!isEdit){
+                         books.add(addBook(title.getText().toString(), type.getText().toString(),
+                                 author.getText().toString(), year.getText().toString(),
+                                 numPages.getText().toString(), comments.getText().toString()));
+
+                     }
+                     // IF BOOK CLICKED FROM LIST VIEW, SET EDITED BOOK TO SAME POSITION IN LIST
+                     else if(isEdit){
+                         books.set(position, addBook(title.getText().toString(), type.getText().toString(),
+                                 author.getText().toString(), year.getText().toString(),
+                                 numPages.getText().toString(), comments.getText().toString()));
+
+                     }
+
                      storageReference = storage.getReference();
-
-                     //databaseReference = FirebaseDatabase.getInstance().getReference();
-                     //SET NEW USER
-                     //User user = new User(currentUser.getDisplayName(), currentUser.getEmail(), books);
-
 
                      //GET FIREBASE REFERENCE AND STORE A VALUE USING SETVALUE()
                      databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -197,6 +190,9 @@ public class BookActivity extends AppCompatActivity {
         CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
         Log.i("SharedHeader", "about to set listener...");
 
+        /**
+         * Start profile activity.
+         */
         profileImage.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,7 +245,7 @@ public class BookActivity extends AppCompatActivity {
                         String year, String pages, String comments) {
 
         if(isValidInput(title, type, author, pages, year, comments)) {
-            // Create new book w/ values
+            // CREATE NEW BOOK WITH VALUES
             book = new Book(title, type, author, year, pages, comments);
             if (favorite.isChecked()) {
                 book.setRead(true);
@@ -279,7 +275,7 @@ public class BookActivity extends AppCompatActivity {
     public boolean isValidInput(String title, String type, String author, String pages, String year,
                                 String comments){
         try {
-            // REQUIRE ONLY TITLE AND AUTHOR
+            // REQUIRE AT LEAST TITLE AND AUTHOR OF BOOK
             if (TextUtils.isEmpty(title)) {
                 Toast.makeText(this, "Please enter book title.",
                         Toast.LENGTH_LONG).show();
@@ -307,7 +303,8 @@ public class BookActivity extends AppCompatActivity {
     }
 
     /**
-     * Load book values into EditText fields for editing/viewing
+     * Load book values into EditText fields for editing/viewing.
+     *
      * Book values are loaded into appropriate EditText fields. Position
      * is passed to ensure that correct book is loaded, according to which
      * is clicked in the ListView. Loading of values only occurs if a book in the displayed
@@ -315,7 +312,7 @@ public class BookActivity extends AppCompatActivity {
      * @param position
      */
     public void load(int position){
-        if(position >= 0){
+        if(position >= 0 && books.get(position)!= null){
             isEdit = true;
             Log.i("LOAD", "Book array size: " + String.valueOf(books.size()));
             title.setText(books.get(position).getTitle());
@@ -330,6 +327,7 @@ public class BookActivity extends AppCompatActivity {
 
     /**
      * Delete currently selected book from list.
+     *
      * Book is deleted from list stored in firebase
      * at the passed position in the list.
      * @param position
