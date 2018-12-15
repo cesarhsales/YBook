@@ -183,11 +183,30 @@ public class ProfileActivity extends AppCompatActivity {
 
         Log.i("ProfileActivity", "User: " + user);
 
+        //When new user
+        if(user == null) {
+            //SET NEW USER
+            User userProfile = new User(currentUser.getDisplayName(), currentUser.getEmail());
+
+            if(!username.getText().toString().isEmpty()) {
+                userProfile.setUsername(username.getText().toString());
+            }
+
+            //GET FIREBASE REFERENCE AND STORE A VALUE USING SETVALUE()
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            databaseReference.child("users").child(currentUser.getUid()).setValue(userProfile);
+
+            hasUpdate = true;
+        }
+
         if(user != null) {
             //SET NEW USER
             //User userProfile = new User(user.getUsername(), user.getEmail(), user.getBooks());
             User userProfile = new User(currentUser.getDisplayName(), user.getEmail(), user.getBooks());
-            userProfile.setUsername(username.getText().toString());
+
+            if(!username.getText().toString().isEmpty()) {
+                userProfile.setUsername(username.getText().toString());
+            }
 
             Log.i("ProfileActivity", "userProfile: " + user.getUsername());
 

@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -52,27 +53,62 @@ public class BookListActivity extends AppCompatActivity implements AdapterView.O
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        //THIS EVENTLISTENER IS REPONSIBLE FOR CHECKING FOR CHANGES
+        //SO IT UPDATES AS NEEDED
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+
+                User user = dataSnapshot.child("users").child(currentUser.getUid())
+                        .getValue(User.class);
+
+                //Set username in shared header
+                TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
+                sharedUsername.setText(currentUser.getDisplayName());
+
+                if (user != null) {
+                    if(!user.getUsername().isEmpty()) {
+                        sharedUsername.setText(user.getUsername());
+                    }
+
+                    Log.i("BookListActivity", "User:" + user.getEmail());
+
+                    //Create the list adapter
+                    BookListAdapter adapter = new BookListAdapter(BookListActivity.this,
+                            generateData(user.getBooks()));
+
+                    //Set the adapter updating the UI
+                    ListView list = findViewById(R.id.booksListView);
+                    list.setOnItemClickListener(BookListActivity.this);
+                    list.setAdapter(adapter);
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("BookListActivity", "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        //Adding the listener to firebase reference
+        databaseReference.addValueEventListener(postListener);
 
         //GET PROFILE IMAGE
-        storageReference.child("images/"+ currentUser.getUid())
+        storageReference.child("images/" + currentUser.getUid())
                 .getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.drawable.profile_img);
-                requestOptions.error(R.drawable.profile_img);
-
-                CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
-                Glide.with(BookListActivity.this)
-                        .load(uri)
-                        .apply(requestOptions)
-                        .into(profileImage);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        setCircleImageWithGlide(uri);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.e("BookListActivity", "Unable to download profile image! " + exception);
+                setCircleImageWithGlide(null);
             }
         });
 
@@ -101,47 +137,18 @@ public class BookListActivity extends AppCompatActivity implements AdapterView.O
                 startActivity(intent);
             }
         });
+    }
 
-        //GET CURRENT USER AND FIREBASE REFERENCES
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+    private void setCircleImageWithGlide(Uri uri) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.profile_img);
+        requestOptions.error(R.drawable.profile_img);
 
-        //THIS EVENTLISTENER IS REPONSIBLE FOR CHECKING FOR CHANGES
-        //SO IT UPDATES AS NEEDED
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-
-                User user = dataSnapshot.child("users").child(currentUser.getUid())
-                        .getValue(User.class);
-                if (user != null) {
-                    //Set username in shared header
-                    TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
-                    sharedUsername.setText(user.getUsername());
-
-                    Log.i("BookListActivity", "User:" + user.getEmail());
-
-                    //Create the list adapter
-                    BookListAdapter adapter = new BookListAdapter(BookListActivity.this,
-                            generateData(user.getBooks()));
-
-                    //Set the adapter updating the UI
-                    ListView list = findViewById(R.id.booksListView);
-                    list.setOnItemClickListener(BookListActivity.this);
-                    list.setAdapter(adapter);
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("BookListActivity", "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        //Adding the listener to firebase reference
-        databaseReference.addValueEventListener(postListener);
+        CircleImageView profileImage = findViewById(R.id.include).findViewById(R.id.defaultProfileImage);
+        Glide.with(BookListActivity.this)
+                .load(uri)
+                .apply(requestOptions)
+                .into(profileImage);
     }
 
     private List<BookListModel> generateData(List<Book> books){

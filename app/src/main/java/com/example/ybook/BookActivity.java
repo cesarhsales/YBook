@@ -95,12 +95,18 @@ public class BookActivity extends AppCompatActivity {
                 user = dataSnapshot.child("users").child(currentUser.getUid())
                         .getValue(User.class);
 
+                //Set username in shared header
+                TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
+                sharedUsername.setText(currentUser.getDisplayName());
+
                 // USER WILL BE NULL UNTIL FIRST BOOK IS ADDED TO FIREBASE
                 // NEED TO ACCOUNT FOR THAT
                 if (user != null) {
                     // SET USERNAME IN SHARED HEADER
-                    TextView sharedUsername = findViewById(R.id.include).findViewById(R.id.sharedUsername);
-                    sharedUsername.setText(user.getUsername());
+                    if(!user.getUsername().isEmpty()) {
+                        sharedUsername.setText(user.getUsername());
+                    }
+
                     Log.i("BookListActivity", "User:" + user.getEmail());
                     if(user.getBooks() != null) {
                         // SET VALUES OF BOOK LIST TO STORED USER BOOK LIST

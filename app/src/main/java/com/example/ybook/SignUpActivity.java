@@ -1,5 +1,6 @@
 package com.example.ybook;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -125,17 +126,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void updateUI(User user) {
         if (user != null) {
-            user = SharedPreferencesCommon.readUserInSharedPreferences(
-                    SignUpActivity.this,
-                    "User");
-
-            Toast.makeText(SignUpActivity.this, user.getEmail(),
-                    Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SignUpActivity.this, BookListActivity.class);
+            startActivity(intent);
         }
-        /*
-        Intent intent = new Intent(SignUpActivity.this, BookListActivity.class);
-        startActivity(intent);
-        */
     }
 
     private boolean isValidUserInput(String username, String email, String password,
